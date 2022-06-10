@@ -28,7 +28,7 @@
                         <button class="btn btn-outline-primary btn-sm" onclick="downloadChartTransaksi('PDF')">
                             Unduh PDF
                         </button>
-                        
+
                     </div>
                 </div>
             </div>
@@ -46,7 +46,7 @@
                         <button class="btn btn-outline-primary btn-sm" onclick="downloadChartPembelian('PDF')">
                             Unduh PDF
                         </button>
-                       
+
                     </div>
                 </div>
             </div>
@@ -64,7 +64,7 @@
                         <button class="btn btn-outline-primary btn-sm" onclick="downloadChartCustomer('PDF')">
                             Unduh PDF
                         </button>
-                        
+
                     </div>
                 </div>
             </div>
@@ -83,7 +83,7 @@
                         <button class="btn btn-outline-primary btn-sm" onclick="downloadChartSupplier('PDF')">
                             Unduh PDF
                         </button>
-                        
+
                     </div>
                 </div>
             </div>
@@ -427,8 +427,8 @@
             downloadChartPDF(chart, "Chart-Transaksi.pdf")
         }
     }
-    
- function downloadChartPembelian(type) {
+
+    function downloadChartPembelian(type) {
         var download = document.getElementById('download-beli')
         var chart = document.getElementById('chartPembelian')
 

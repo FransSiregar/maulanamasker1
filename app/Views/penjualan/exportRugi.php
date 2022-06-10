@@ -57,7 +57,7 @@
                     foreach ($result as $value) : ?>
                         <tr>
 
-                            <td width="20%"><?= number_to_currency($value['total_sale'], 'IDR', 'id_ID') ?></td>
+                            <td width="20%"><?= number_to_currency($value['total_sale'] / 2, 'IDR', 'id_ID') ?></td>
                             <td width="40%"><?= number_to_currency($value['total_buy'] / 2, 'IDR', 'id_ID') ?></td>
                             <td width="40%"><?= number_to_currency($value['total_sale'] - $value['total_buy'], 'IDR', 'id_ID', 1) ?></td>
                         </tr>

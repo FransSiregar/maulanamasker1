@@ -16,7 +16,7 @@
             <div class="card-body">
                 <div class="container">
                     <div class="row">
-                        <div class="col">
+                        <div class="col-md-3 ms-md-4">
                             <label class="col-form-label">Tanggal : </label>
                             <input type="text" value="<?= date('d/m/Y') ?> " disabled>
                         </div>
@@ -24,22 +24,27 @@
                             <label class="col-form-label">User : </label>
                             <input type="text" value="<?= user()->username ?> " disabled>
                         </div>
-
-                        <div class="col">
+                        <div class="col-auto">
                             <label class="col-form-label">Nomor Nota : </label>
                             <input type="text" id="nota" value="<?= "J" . time() ?> " disabled>
                         </div>
-
-                        <div class="col">
+                        <div class="col-auto">
                             <label class="col-form-label">Customer : </label>
                             <input type="text" id="nama-cust" disabled>
                             <input type="hidden" id="id-cust" disabled>
                         </div>
-
-                        <div class="col">
-                            <button class="btn btn-success" data-bs-target="#modalProduk" data-bs-toggle="modal">Pilih Produk </button>
-                            <h1></h1>
-                            <button class="btn btn-primary" data-bs-target="#modalCust" data-bs-toggle="modal">Pilih Customer </button>
+                        <br>
+                        <br>
+                        <div class="col-md-2 ms-md-auto">
+                            <div>
+                                <button class="btn btn-success" data-bs-target="#modalProduk" data-bs-toggle="modal">Pilih Produk </button>
+                            </div>
+                            <br>
+                            <?php if (has_permission('admin')) : ?>
+                                <div>
+                                    <button class="btn btn-primary" data-bs-target="#modalCust" data-bs-toggle="modal">Pilih Customer </button>
+                                </div>
+                            <?php endif; ?>
                         </div>
                     </div>
                 </div>
@@ -83,7 +88,7 @@
                     </div>
                     <div class="d-grid gap-3 d-md-flex justify-content-md-end">
                         <button onclick="bayar()" class="btn btn-success me-md-2" type="button">Proses Bayar</button>
-                        
+
                     </div>
                 </div>
 

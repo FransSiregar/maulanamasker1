@@ -39,7 +39,7 @@
 <body>
     <main>
         <div class="title">
-            <h1>Nota Penjualan WETAP</h1>
+            <h1>Nota Penjualan</h1>
         </div>
         <div>
             <!-- Laporan Start -->

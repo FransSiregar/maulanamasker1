@@ -8,38 +8,55 @@
                        Dashboard
                    </a> -->
 
-
-                   <div class="sb-sidenav-menu-heading"> </div>
-
-                   <?php if (has_permission('pembelian')) : ?>
-
-                       <a class="nav-link" href="/produk">
-                           <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
-                           Data Produk
+                   <?php if (has_permission('admin')) : ?>
+                       <div class="sb-sidenav-menu-heading">Transaksi</div>
+                       <a class="nav-link" href="/jual">
+                           <div class="sb-nav-link-icon"><i class="fas fa-users"></i></div>
+                           Penjualan
                        </a>
-                   <?php endif; ?>
+                       <a class="nav-link" href="/beli">
+                           <div class="sb-nav-link-icon"><i class="fas fa-users"></i></div>
+                           Pembelian
+                       </a>
 
-                   <?php if (has_permission('data-users')) : ?>
+                       <div class="sb-sidenav-menu-heading">Laporan</div>
+                       <a class="nav-link" href="/jual/laporan">
+                           <div class="sb-nav-link-icon"><i class="fas fa-box"></i></div>
+                           Laporan Penjualan
+                       </a>
+                       <a class="nav-link" href="/beli/laporan">
+                           <div class="sb-nav-link-icon"><i class="fas fa-address-card"></i></div>
+                           Laporan Pembelian
+                       </a>
+
+                       <div class="sb-sidenav-menu-heading">Data Master</div>
                        <a class="nav-link" href="/users">
                            <div class="sb-nav-link-icon"><i class="fas fa-users"></i></div>
                            Pengelolaan User
                        </a>
+                       <a class="nav-link" href="/produk">
+                           <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                           Data Produk
+                       </a>
+                       <a class="nav-link" href="/customer">
+                           <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                           Data Customer
+                       </a>
+                       <a class="nav-link" href="/supplier">
+                           <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                           Data Supplier
+                       </a>
                    <?php endif; ?>
 
 
-                   <?php if (has_permission('penjualan')) : ?>
+                   <?php if (has_permission('customer')) : ?>
+                       <div class="sb-sidenav-menu-heading">Transaksi</div>
                        <a class="nav-link" href="/jual">
                            <div class="sb-nav-link-icon"><i class="fas fa-users"></i></div>
                            Penjualan
                        </a>
                    <?php endif; ?>
 
-                   <?php if (has_permission('pembelian')) : ?>
-                       <a class="nav-link" href="/beli">
-                           <div class="sb-nav-link-icon"><i class="fas fa-users"></i></div>
-                           Pembelian
-                       </a>
-                   <?php endif; ?>
 
 
 
