@@ -1,4 +1,12 @@
 <?= $this->extend('layout/template') ?>
+<?php if (has_permission('customer')) : ?>
+    <?= $this->section('content') ?>
+    <div>
+        <h2 class="mt-4">SELAMAT DATANG DI WEBSITE MAULANA MASKER</h2>
+    </div>
+    <?= $this->endSection() ?>
+<?php endif; ?>
+
 <?php if (has_permission('admin')) : ?>
     <?= $this->section('content') ?>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.min.js"></script>

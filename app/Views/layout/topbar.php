@@ -1,5 +1,5 @@
 <body class="sb-nav-fixed">
-    <nav class="sb-topnav navbar navbar-expand navbar-light bg-warning">
+    <nav class="sb-topnav navbar navbar-expand navbar-dark bg-secondary">
         <!-- Navbar Brand-->
         <a class="navbar-brand ps-3" href="<?= base_url() ?>">Maulana Masker</a>
         <!-- Sidebar Toggle-->
