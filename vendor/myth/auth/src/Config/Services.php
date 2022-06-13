@@ -1,4 +1,6 @@
-<?php namespace Myth\Auth\Config;
+<?php
+
+namespace Myth\Auth\Config;
 
 use CodeIgniter\Model;
 use Myth\Auth\Config\Auth as AuthConfig;
@@ -19,8 +21,7 @@ class Services extends BaseService
 {
 	public static function authentication(string $lib = 'local', Model $userModel = null, Model $loginModel = null, bool $getShared = true)
 	{
-		if ($getShared)
-		{
+		if ($getShared) {
 			return self::getSharedInstance('authentication', $lib, $userModel, $loginModel);
 		}
 
@@ -39,8 +40,7 @@ class Services extends BaseService
 
 	public static function authorization(Model $groupModel = null, Model $permissionModel = null, Model $userModel = null, bool $getShared = true)
 	{
-		if ($getShared)
-		{
+		if ($getShared) {
 			return self::getSharedInstance('authorization', $groupModel, $permissionModel, $userModel);
 		}
 
@@ -63,8 +63,7 @@ class Services extends BaseService
 	 */
 	public static function passwords(AuthConfig $config = null, bool $getShared = true): PasswordValidator
 	{
-		if ($getShared)
-		{
+		if ($getShared) {
 			return self::getSharedInstance('passwords', $config);
 		}
 
@@ -81,8 +80,7 @@ class Services extends BaseService
 	 */
 	public static function activator(AuthConfig $config = null, bool $getShared = true): ActivatorInterface
 	{
-		if ($getShared)
-		{
+		if ($getShared) {
 			return self::getSharedInstance('activator', $config);
 		}
 
@@ -102,8 +100,7 @@ class Services extends BaseService
 	 */
 	public static function resetter(AuthConfig $config = null, bool $getShared = true): ResetterInterface
 	{
-		if ($getShared)
-		{
+		if ($getShared) {
 			return self::getSharedInstance('resetter', $config);
 		}
 

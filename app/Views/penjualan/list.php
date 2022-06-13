@@ -55,7 +55,6 @@
                             <th>Produk</th>
                             <th>Jumlah</th>
                             <th>Harga Satuan</th>
-
                             <th>Subtotal</th>
                             <th>Aksi</th>
                         </tr>

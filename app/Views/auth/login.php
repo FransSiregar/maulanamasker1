@@ -7,7 +7,7 @@
             <div class="col-lg-5">
                 <div class="card shadow-lg border-0 rounded-lg mt-5">
                     <div class="card-header">
-                        <h3 class="text-center font-weight-light my-4">LOGIN</h3>
+                        <h3 class="text-center font-weight-light my-4">Login</h3>
                     </div>
                     <div class="card-body">
                         <?= view('Myth\Auth\Views\_message_block') ?>
@@ -50,14 +50,14 @@
                                     <?php if ($config->activeResetter) : ?>
                                         <a class="small" href="<?= route_to('forgot') ?>"><?= lang('Auth.forgotYourPassword') ?></a>
                                     <?php endif; ?>
-                                    <button type="submit" class="btn btn-success"><?= lang('Auth.loginAction') ?></button>
+                                    <button type="submit" class="btn btn-primary btn-block"><?= lang('Auth.loginAction') ?></button>
                                 </div>
                             </form>
                     </div>
                     <div class="card-footer text-center py-3">
                         <?php if ($config->allowRegistration) : ?>
                             <div class="small">
-                                <a href="<? route_to('register') ?>"><? lang('Auth.needAnAccount') ?></a>
+                                <p><a href="<?= route_to('register') ?>"><?= lang('Auth.needAnAccount') ?></a></p>
                             </div>
                     </div>
                 <?php endif; ?>

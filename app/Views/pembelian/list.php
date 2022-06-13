@@ -20,7 +20,7 @@
                             <label class="col-form-label">Tanggal : </label>
                             <input type="text" value="<?= date('d/m/Y') ?> " disabled>
                         </div>
-                        <div class="col">
+                        <div class="col-auto">
                             <label class="col-form-label">Nama Supplier : </label>
                             <input type="text" id="nama-sup" disabled>
                             <input type="hidden" id="id-sup" disabled>
@@ -32,7 +32,6 @@
 
                         <div class="col">
                             <button class="btn btn-primary" data-bs-target="#modalProduk" data-bs-toggle="modal">Pilih Produk </button>
-
                             <button class="btn btn-primary" data-bs-target="#modalSup" data-bs-toggle="modal">Pilih Supplier </button>
 
                         </div>
