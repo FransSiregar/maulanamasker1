@@ -1,18 +1,20 @@
-<?php namespace CodeIgniterCart;
+<?php
+
+namespace CodeIgniterCart;
 
 /**
-* The Cart class is a basic port of the CodeIgniter 3 cart module for CodeIgniter 4.
-*
-* @package    CodeIgniterCart
-* @copyright  Copyright (c) 2014 - 2017, British Columbia Institute of Technology (http://bcit.ca/)
-* @copyright  Copyright (c) 2008 - 2014, EllisLab, Inc. (https://ellislab.com/)
-* @link       https://github.com/jason-napolitano/CodeIgniter4-Cart-Module
-* @link       https://codeigniter.com/user_guide/libraries/cart.html
-* @license    http://opensource.org/licenses/MIT
-* @author     EllisLab Dev Team
-* @since      1.0.0
-* @deprecated 3.0.0
-*/
+ * The Cart class is a basic port of the CodeIgniter 3 cart module for CodeIgniter 4.
+ *
+ * @package    CodeIgniterCart
+ * @copyright  Copyright (c) 2014 - 2017, British Columbia Institute of Technology (http://bcit.ca/)
+ * @copyright  Copyright (c) 2008 - 2014, EllisLab, Inc. (https://ellislab.com/)
+ * @link       https://github.com/jason-napolitano/CodeIgniter4-Cart-Module
+ * @link       https://codeigniter.com/user_guide/libraries/cart.html
+ * @license    http://opensource.org/licenses/MIT
+ * @author     EllisLab Dev Team
+ * @since      1.0.0
+ * @deprecated 3.0.0
+ */
 class Cart
 {
     /**
@@ -65,9 +67,9 @@ class Cart
 
         // Grab the shopping cart array from the session table
         $this->cartContents = $this->session->get('cart_contents');
-        if ( $this->cartContents === null ) {
+        if ($this->cartContents === null) {
             // No cart exists so we'll set some base values
-            $this->cartContents = [ 'cart_total' => 0, 'total_items' => 0 ];
+            $this->cartContents = ['cart_total' => 0, 'total_items' => 0];
         }
 
         log_message('info', 'Cart Class Initialized');
@@ -85,7 +87,7 @@ class Cart
     public function insert($items = []): bool
     {
         // Was any cart data passed? No? Bah...
-        if ( ! is_array($items) || count($items) === 0 ) {
+        if (!is_array($items) || count($items) === 0) {
             log_message('error', 'The insert method must be passed an array containing data.');
             return false;
         }
@@ -96,20 +98,20 @@ class Cart
         // at the top level. If it's not found, we will assume it's a multi-dimensional array.
 
         $save_cart = false;
-        if ( isset($items[ 'id' ]) ) {
-            if ( ( $rowid = $this->_insert($items) ) ) {
+        if (isset($items['id'])) {
+            if (($rowid = $this->_insert($items))) {
                 $save_cart = true;
             }
         } else {
-            foreach ( $items as $val ) {
-                if ( is_array($val) && isset($val[ 'id' ]) && $this->_insert($val) ) {
+            foreach ($items as $val) {
+                if (is_array($val) && isset($val['id']) && $this->_insert($val)) {
                     $save_cart = true;
                 }
             }
         }
 
         // Save the cart data if the insert was successful
-        if ( $save_cart === true ) {
+        if ($save_cart === true) {
             $this->saveCart();
             return $rowid ?? true;
         }
@@ -128,7 +130,7 @@ class Cart
     protected function _insert($items = [])
     {
         // Was any cart data passed? No? Bah...
-        if ( ! is_array($items) || count($items) === 0 ) {
+        if (!is_array($items) || count($items) === 0) {
             log_message('error', 'The insert method must be passed an array containing data.');
             return false;
         }
@@ -136,7 +138,7 @@ class Cart
         // --------------------------------------------------------------------
 
         // Does the $items array contain an id, quantity, price, and name?  These are required
-        if ( ! isset($items[ 'id' ], $items[ 'qty' ], $items[ 'price' ], $items[ 'name' ]) ) {
+        if (!isset($items['id'], $items['qty'], $items['price'], $items['name'])) {
             log_message('error', 'The cart array must contain a product ID, quantity, price, and name.');
             return false;
         }
@@ -144,10 +146,10 @@ class Cart
         // --------------------------------------------------------------------
 
         // Prep the quantity. It can only be a number.  Duh... also trim any leading zeros
-        $items[ 'qty' ] = (float)$items[ 'qty' ];
+        $items['qty'] = (float)$items['qty'];
 
         // If the quantity is zero or blank there's nothing for us to do
-        if ( $items[ 'qty' ] === 0 ) {
+        if ($items['qty'] === 0) {
             return false;
         }
 
@@ -156,7 +158,7 @@ class Cart
         // Validate the product ID. It can only be alpha-numeric, dashes, underscores or periods
         // Not totally sure we should impose this rule, but it seems prudent to standardize IDs.
         // Note: These can be user-specified by setting the $this->product_id_rules variable.
-        if ( ! preg_match('/^[' . $this->productIdRules . ']+$/i', $items[ 'id' ]) ) {
+        if (!preg_match('/^[' . $this->productIdRules . ']+$/i', $items['id'])) {
             log_message('error', 'Invalid product ID.  The product ID can only contain alpha-numeric characters, dashes, and underscores');
             return false;
         }
@@ -165,15 +167,15 @@ class Cart
 
         // Validate the product name. It can only be alpha-numeric, dashes, underscores, colons or periods.
         // Note: These can be user-specified by setting the $this->product_name_rules variable.
-        if ( $this->productNameSafe && ! preg_match('/^[' . $this->productNameRules . ']+$/i' . ( true ? 'u' : '' ), $items[ 'name' ]) ) {
-            log_message('error', 'An invalid name was submitted as the product name: ' . $items[ 'name' ] . ' The name can only contain alpha-numeric characters, dashes, underscores, colons, and spaces');
+        if ($this->productNameSafe && !preg_match('/^[' . $this->productNameRules . ']+$/i' . (true ? 'u' : ''), $items['name'])) {
+            log_message('error', 'An invalid name was submitted as the product name: ' . $items['name'] . ' The name can only contain alpha-numeric characters, dashes, underscores, colons, and spaces');
             return false;
         }
 
         // --------------------------------------------------------------------
 
         // Prep the price. Remove leading zeros and anything that isn't a number or decimal point.
-        $items[ 'price' ] = (float)$items[ 'price' ];
+        $items['price'] = (float)$items['price'];
 
         // We now need to create a unique identifier for the item being inserted into the cart.
         // Every time something is added to the cart it is stored in the master cart array.
@@ -185,25 +187,25 @@ class Cart
         // Internally, we need to treat identical submissions, but with different options, as a unique product.
         // Our solution is to convert the options array to a string and MD5 it along with the product ID.
         // This becomes the unique "row ID"
-        if ( isset($items[ 'options' ]) && count($items[ 'options' ]) > 0 ) {
-            $rowid = md5($items[ 'id' ] . serialize($items[ 'options' ]));
+        if (isset($items['options']) && count($items['options']) > 0) {
+            $rowid = md5($items['id'] . serialize($items['options']));
         } else {
             // No options were submitted so we simply MD5 the product ID.
             // Technically, we don't need to MD5 the ID in this case, but it makes
             // sense to standardize the format of array indexes for both conditions
-            $rowid = md5($items[ 'id' ]);
+            $rowid = md5($items['id']);
         }
 
         // --------------------------------------------------------------------
 
         // Now that we have our unique "row ID", we'll add our cart items to the master array
         // grab quantity if it's already there and add it on
-        $old_quantity = isset($this->cartContents[ $rowid ][ 'qty' ]) ? (int)$this->cartContents[ $rowid ][ 'qty' ] : 0;
+        $old_quantity = isset($this->cartContents[$rowid]['qty']) ? (int)$this->cartContents[$rowid]['qty'] : 0;
 
         // Re-create the entry, just to make sure our index contains only the data from this submission
-        $items[ 'rowid' ] = $rowid;
-        $items[ 'qty' ] += $old_quantity;
-        $this->cartContents[ $rowid ] = $items;
+        $items['rowid'] = $rowid;
+        $items['qty'] += $old_quantity;
+        $this->cartContents[$rowid] = $items;
 
         return $rowid;
     }
@@ -224,7 +226,7 @@ class Cart
     public function update($items = []): bool
     {
         // Was any cart data passed?
-        if ( ! is_array($items) || count($items) === 0 ) {
+        if (!is_array($items) || count($items) === 0) {
             return false;
         }
 
@@ -233,20 +235,20 @@ class Cart
         // determine the array type is by looking for a required array key named "rowid".
         // If it's not found we assume it's a multi-dimensional array
         $save_cart = false;
-        if ( isset($items[ 'rowid' ]) ) {
-            if ( $this->_update($items) === true ) {
+        if (isset($items['rowid'])) {
+            if ($this->_update($items) === true) {
                 $save_cart = true;
             }
         } else {
-            foreach ( $items as $val ) {
-                if ( is_array($val) && isset($val[ 'rowid' ]) && $this->_update($val) === true ) {
+            foreach ($items as $val) {
+                if (is_array($val) && isset($val['rowid']) && $this->_update($val) === true) {
                     $save_cart = true;
                 }
             }
         }
 
         // Save the cart data if the insert was successful
-        if ( $save_cart === true ) {
+        if ($save_cart === true) {
             $this->saveCart();
             return true;
         }
@@ -270,31 +272,31 @@ class Cart
     protected function _update($items = []): bool
     {
         // Without these array indexes there is nothing we can do
-        if ( ! isset($items[ 'rowid' ], $this->cartContents[ $items[ 'rowid' ] ]) ) {
+        if (!isset($items['rowid'], $this->cartContents[$items['rowid']])) {
             return false;
         }
 
         // Prep the quantity
-        if ( isset($items[ 'qty' ]) ) {
-            $items[ 'qty' ] = (float)$items[ 'qty' ];
+        if (isset($items['qty'])) {
+            $items['qty'] = (float)$items['qty'];
             // Is the quantity zero?  If so we will remove the item from the cart.
             // If the quantity is greater than zero we are updating
-            if ( $items[ 'qty' ] === 0 ) {
-                unset($this->cartContents[ $items[ 'rowid' ] ]);
+            if ($items['qty'] === 0) {
+                unset($this->cartContents[$items['rowid']]);
                 return true;
             }
         }
 
         // find updatable keys
-        $keys = array_intersect(array_keys($this->cartContents[ $items[ 'rowid' ] ]), array_keys($items));
+        $keys = array_intersect(array_keys($this->cartContents[$items['rowid']]), array_keys($items));
         // if a price was passed, make sure it contains valid data
-        if ( isset($items[ 'price' ]) ) {
-            $items[ 'price' ] = (float)$items[ 'price' ];
+        if (isset($items['price'])) {
+            $items['price'] = (float)$items['price'];
         }
 
         // product id & name shouldn't be changed
-        foreach ( array_diff($keys, [ 'id', 'name' ]) as $key ) {
-            $this->cartContents[ $items[ 'rowid' ] ][ $key ] = $items[ $key ];
+        foreach (array_diff($keys, ['id', 'name']) as $key) {
+            $this->cartContents[$items['rowid']][$key] = $items[$key];
         }
 
         return true;
@@ -310,20 +312,20 @@ class Cart
     protected function saveCart(): bool
     {
         // Let's add up the individual prices and set the cart sub-total
-        $this->cartContents[ 'total_items' ] = $this->cartContents[ 'cart_total' ] = 0;
-        foreach ( $this->cartContents as $key => $val ) {
+        $this->cartContents['total_items'] = $this->cartContents['cart_total'] = 0;
+        foreach ($this->cartContents as $key => $val) {
             // We make sure the array contains the proper indexes
-            if ( ! is_array($val) || ! isset($val[ 'price' ], $val[ 'qty' ]) ) {
+            if (!is_array($val) || !isset($val['price'], $val['qty'])) {
                 continue;
             }
 
-            $this->cartContents[ 'cart_total' ] += ( $val[ 'price' ] * $val[ 'qty' ] );
-            $this->cartContents[ 'total_items' ] += $val[ 'qty' ];
-            $this->cartContents[ $key ][ 'subtotal' ] = ( $this->cartContents[ $key ][ 'price' ] * $this->cartContents[ $key ][ 'qty' ] );
+            $this->cartContents['cart_total'] += ($val['price'] * $val['qty']);
+            $this->cartContents['total_items'] += $val['qty'];
+            $this->cartContents[$key]['subtotal'] = ($this->cartContents[$key]['price'] * $this->cartContents[$key]['qty']);
         }
 
         // Is our cart empty? If so we delete it from the session
-        if ( count($this->cartContents) <= 2 ) {
+        if (count($this->cartContents) <= 2) {
             $this->session->remove('cart_contents');
 
             // Nothing more to do... coffee time!
@@ -347,7 +349,7 @@ class Cart
      */
     public function total()
     {
-        return $this->cartContents[ 'cart_total' ];
+        return $this->cartContents['cart_total'];
     }
 
     // ------------------------------------------------------------------------
@@ -364,7 +366,7 @@ class Cart
     public function remove($rowid): bool
     {
         // unset & save
-        unset($this->cartContents[ $rowid ]);
+        unset($this->cartContents[$rowid]);
         $this->saveCart();
         return true;
     }
@@ -380,7 +382,7 @@ class Cart
      */
     public function totalItems()
     {
-        return $this->cartContents[ 'total_items' ];
+        return $this->cartContents['total_items'];
     }
 
     // ------------------------------------------------------------------------
@@ -396,10 +398,10 @@ class Cart
     public function contents($newest_first = false): array
     {
         // do we want the newest first?
-        $cart = ( $newest_first ) ? array_reverse($this->cartContents) : $this->cartContents;
+        $cart = ($newest_first) ? array_reverse($this->cartContents) : $this->cartContents;
 
         // Remove these so they don't create a problem when showing the cart table
-        unset($cart[ 'total_items' ], $cart[ 'cart_total' ]);
+        unset($cart['total_items'], $cart['cart_total']);
 
         return $cart;
     }
@@ -416,9 +418,9 @@ class Cart
      */
     public function getItem($row_id)
     {
-        return ( in_array($row_id, [ 'total_items', 'cart_total' ], true) OR ! isset($this->cartContents[ $row_id ]) )
+        return (in_array($row_id, ['total_items', 'cart_total'], true) or !isset($this->cartContents[$row_id]))
             ? false
-            : $this->cartContents[ $row_id ];
+            : $this->cartContents[$row_id];
     }
 
     // ------------------------------------------------------------------------
@@ -434,7 +436,7 @@ class Cart
      */
     public function hasOptions($row_id = ''): bool
     {
-        return ( isset($this->cartContents[ $row_id ][ 'options' ]) && count($this->cartContents[ $row_id ][ 'options' ]) !== 0 );
+        return (isset($this->cartContents[$row_id]['options']) && count($this->cartContents[$row_id]['options']) !== 0);
     }
 
     // ------------------------------------------------------------------------
@@ -449,7 +451,7 @@ class Cart
      */
     public function productOptions($row_id = '')
     {
-        return $this->cartContents[ $row_id ][ 'options' ] ?? [];
+        return $this->cartContents[$row_id]['options'] ?? [];
     }
 
     // ------------------------------------------------------------------------
@@ -464,7 +466,7 @@ class Cart
      */
     public function formatNumber($n = ''): string
     {
-        return ( $n === '' ) ? '' : number_format((float)$n, 2);
+        return ($n === '') ? '' : number_format((float)$n, 2);
     }
 
     // ------------------------------------------------------------------------
@@ -476,7 +478,7 @@ class Cart
      */
     public function destroy(): void
     {
-        $this->cartContents = [ 'cart_total' => 0, 'total_items' => 0 ];
+        $this->cartContents = ['cart_total' => 0, 'total_items' => 0];
         $this->session->remove('cart_contents');
     }
 }

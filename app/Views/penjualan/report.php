@@ -25,6 +25,8 @@
                             <th>Tanggal Transaksi</th>
                             <th>User</th>
                             <th>Customer</th>
+                            <th>Alamat</th>
+                            <th>Telepon</th>
                             <th>Total</th>
                             <th>Aksi</th>
 
@@ -39,6 +41,8 @@
                                 <td><?= date("d/m/Y H:i:s", strtotime($value['tgl_transaksi'])) ?></td>
                                 <td><?= $value['firstname'] ?> <?= $value['lastname'] ?></td>
                                 <td><?= $value['name_cust'] ?></td>
+                                <td><?= $value['address'] ?></td>
+                                <td><?= $value['phone'] ?></td>
                                 <td><?= number_to_currency(
                                         $value['total'],
                                         'IDR',

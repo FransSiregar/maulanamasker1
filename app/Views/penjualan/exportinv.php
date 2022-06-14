@@ -1,3 +1,7 @@
+<?php
+
+use Kint\Zval\Value;
+?>
 <html>
 
 <head>
@@ -50,8 +54,8 @@
                         <th width="15%">Nota</th>
                         <th width="15%">Tanggal Transaksi</th>
                         <th width="20%">Nama Produk</th>
-                        <th width="10%">Jumlah Produk</th>
-                        <th width="15%">Harga</th>
+                        <th width="5%">Jml</th>
+                        <th width="15%">Harga Satuan</th>
                         <th width="20%">Total Harga</th>
                     </tr>
                 </thead>
@@ -63,9 +67,9 @@
                             <td width="15%"><?= $value['sale_id'] ?></td>
                             <td width="15%"><?= date("d/m/y H:i:s", strtotime($value['created_at'])) ?></td>
                             <td width="20%" class="left"><?= $value['nama_produk'] ?></td>
-                            <td width="10%"><?= $value['amount'] ?></td>
-                            <td width="15%" class="right"><?= number_to_currency($value['price'], 'IDR', 'id_ID', 2) ?></td>
-                            <td width="20%" class="right"><?= number_to_currency(($value['price'] * $value['amount']), 'IDR', 'id_ID', 2) ?></td>
+                            <td width="5%"><?= $value['amount'] ?></td>
+                            <td width="15%" class="center"><?= number_to_currency($value['price'], 'IDR', 'id_ID', 2) ?></td>
+                            <td width="20%" class="center"><?= number_to_currency(($value['price'] * $value['amount']), 'IDR', 'id_ID', 2) ?></td>
                         </tr>
                     <?php endforeach; ?>
                 </tbody>
@@ -74,5 +78,3 @@
         </div>
     </main>
 </body>
-
-</html>

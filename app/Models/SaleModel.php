@@ -11,7 +11,7 @@ class SaleModel extends Model
 
     protected $useTimestamps = true;
 
-    protected $allowedFields = ['sale_id', 'user_id', 'customer_id'];
+    protected $allowedFields = ['sale_id', 'user_id', 'customer_id', 'address', 'phone'];
 
     public function getReport()
     {
@@ -27,7 +27,7 @@ class SaleModel extends Model
 
         return $this->db->query("SELECT s.sale_id, s.created_at tgl_transaksi, us.id 
         user_id, us.firstname, us.lastname, us.username, c.customer_id, c.name name_cust, 
-        c.customer_id, SUM(sd.total_price) total FROM sale_detail sd
+        c.customer_id, s.address, s.phone,  SUM(sd.total_price) total FROM sale_detail sd
         JOIN sale s ON s.sale_id = sd.sale_id
         JOIN users us ON us.id = s.user_id
         LEFT JOIN customer c ON c.customer_id = s.customer_id
@@ -36,7 +36,7 @@ class SaleModel extends Model
     public function getInv($id)
     {
         return $this->db->table('sale_detail as sd')
-            ->select('s.sale_id, s.created_at, b.nama_produk, sd.amount, sd.price')
+            ->select('s.sale_id, s.name, s.created_at, b.nama_produk, sd.amount, sd.price')
             ->join('sale s', 'sale_id')
             ->join('produk b', 'produk_id', 'left')
             ->where('s.sale_id', $id)

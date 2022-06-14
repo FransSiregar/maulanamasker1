@@ -144,13 +144,19 @@
         var nominal = $('#nominal').val();
         var idcust = $('#id-cust').val();
         var nota = $('#nota').val();
+        var address = $('#address').val();
+        var phone = $('#phone').val();
         $.ajax({
             url: "/jual/bayar",
             method: "POST",
             data: {
                 'nominal': nominal,
                 'id-cust': idcust,
-                'nota': nota
+                'nota': nota,
+                'address': address,
+                'phone': phone,
+
+
 
             },
             success: function(response) {

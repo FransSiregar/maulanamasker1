@@ -20,7 +20,7 @@
                             <label class="col-form-label">Tanggal : </label>
                             <input type="text" value="<?= date('d/m/Y') ?> " disabled>
                         </div>
-                        <div class="col">
+                        <div class="col-auto">
                             <label class="col-form-label">User : </label>
                             <input type="text" value="<?= user()->username ?> " disabled>
                         </div>
@@ -30,8 +30,19 @@
                         </div>
                         <div class="col-auto">
                             <label class="col-form-label">Customer : </label>
-                            <input type="text" id="nama-cust" disabled>
+                            <input type="text" id="nama-cust" value="" disabled>
                             <input type="hidden" id="id-cust" disabled>
+                        </div>
+                        <br>
+                        <br>
+                        <br>
+                        <div class="col-auto">
+                            <label class="col-form-label">Alamat Lengkap : </label>
+                            <input name="address" id="address" required>
+                        </div>
+                        <div class="col-auto">
+                            <label class="col-form-label">Telepon : </label>
+                            <input name="phone" id="phone" required>
                         </div>
                         <br>
                         <br>
@@ -87,15 +98,11 @@
                     </div>
                     <div class="d-grid gap-3 d-md-flex justify-content-md-end">
                         <button onclick="bayar()" class="btn btn-success me-md-2" type="button">Proses Bayar</button>
-
                     </div>
                 </div>
-
             </div>
         </div>
     </div>
-
-
 </main>
 <?= $this->include('penjualan/modal-produk') ?>
 <?= $this->include('penjualan/modal-customer') ?>

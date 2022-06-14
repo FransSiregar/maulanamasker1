@@ -162,8 +162,9 @@ class Penjualan extends BaseController
                     $this->sale->save([
                         'sale_id' => $id,
                         'user_id' => user()->id,
-                        'customer_id' => $this->request->getVar('id-cust')
-
+                        'customer_id' => $this->request->getVar('id-cust'),
+                        'address' => $this->request->getvar('address'),
+                        'phone' => $this->request->getVar('phone')
                     ]);
 
                     foreach ($this->cart->contents() as $items) {
@@ -172,8 +173,7 @@ class Penjualan extends BaseController
                             'produk_id' => $items['id'],
                             'amount'  => $items['qty'],
                             'price'   => $items['price'],
-                            'discount' => $diskon,
-                            'total_price' => $items['subtotal'] - $diskon,
+                            'total_price' => $items['subtotal'],
                         ]);
                         //Mengurangi jumlah stock di tabel produk
                         // Get Produk berdasarkan ID Produk
@@ -190,7 +190,7 @@ class Penjualan extends BaseController
                     $response =
                         [
                             'status' => true,
-                            'msg' => "Payment Success",
+                            'msg' => "Process Payment",
                             'data' =>
                             [
                                 'kembalian' => number_to_currency($kembalian, 'IDR', 'id_ID', 2)
@@ -221,7 +221,7 @@ class Penjualan extends BaseController
         $this->response->setContentType('application/pdf');
         $pdf->Output('laporan-LabaRugi.pdf', 'I');
     }
-    
+
 
     public function report()
     {
