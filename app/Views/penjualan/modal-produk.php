@@ -146,6 +146,7 @@
         var nota = $('#nota').val();
         var address = $('#address').val();
         var phone = $('#phone').val();
+        var image = $('#image').val();
         $.ajax({
             url: "/jual/bayar",
             method: "POST",
@@ -155,9 +156,7 @@
                 'nota': nota,
                 'address': address,
                 'phone': phone,
-
-
-
+                'image': image,
             },
             success: function(response) {
                 var result = JSON.parse(response);

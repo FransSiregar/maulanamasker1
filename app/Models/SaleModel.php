@@ -11,7 +11,7 @@ class SaleModel extends Model
 
     protected $useTimestamps = true;
 
-    protected $allowedFields = ['sale_id', 'user_id', 'customer_id', 'address', 'phone'];
+    protected $allowedFields = ['sale_id', 'user_id', 'customer_id', 'address', 'phone', 'status', 'image'];
 
     public function getReport()
     {
@@ -27,7 +27,7 @@ class SaleModel extends Model
 
         return $this->db->query("SELECT s.sale_id, s.created_at tgl_transaksi, us.id 
         user_id, us.firstname, us.lastname, us.username, c.customer_id, c.name name_cust, 
-        c.customer_id, s.address, s.phone,  SUM(sd.total_price) total FROM sale_detail sd
+        c.customer_id, s.address, s.phone, s.status, s.image, SUM(sd.total_price) total FROM sale_detail sd
         JOIN sale s ON s.sale_id = sd.sale_id
         JOIN users us ON us.id = s.user_id
         LEFT JOIN customer c ON c.customer_id = s.customer_id

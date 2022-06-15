@@ -53,6 +53,16 @@
                 img_preview.src = e.target.result;
             }
         }
+
+        function previewBukti() {
+            const cover = document.querySelector('#image');
+            const img_preview = document.querySelector('.img-preview');
+            const file_cover = new FileReader();
+            file_cover.readAsDataURL(cover.files[0]);
+            file_cover.onload = function(e) {
+                img_preview.src = e.target.result;
+            }
+        }
     </script>
     <?php if (!empty($result->css_files)) : ?>
         <?php foreach ($result->js_files as $file) : ?>

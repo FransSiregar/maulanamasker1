@@ -28,6 +28,7 @@
                             <th>Alamat</th>
                             <th>Telepon</th>
                             <th>Total</th>
+                            <th>Status</th>
                             <th>Aksi</th>
 
                         </tr>
@@ -49,7 +50,7 @@
                                         'id_ID',
                                         2
                                     ) ?>
-
+                                <td><img src="img/<?= $value['image'] ?>" alt="" width="100"></td>
                                 </td>
                                 <td><a target="_blank" class="btn btn-danger" href="/jual/exportinv/<?= $value['sale_id'] ?>" role="button">Cetak</a></td>
                             </tr>

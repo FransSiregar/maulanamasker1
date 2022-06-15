@@ -81,17 +81,26 @@
                             <h1><span id="spanTotal">0</span></h1>
                         </div>
                         <div class="col-4">
+                            <label for="cover" class="col-sm-2 col-form-label">Bukti Transaksi</label>
+                            <div class="col-sm-12">
+                                <input type="file" class="form-control" id="image" name="image" onchange="previewBukti()">
+                                <div id="validationServer03Feedback" class="invalid-feedback">
+                                </div>
+                                <div class="col-sm-6 mt-2">
+                                    <img src="/img/default.jpeg" alt="" class="img-thumbnail img-preview">
+                                </div>
+                            </div>
                             <div class="mb-3 row">
-                                <label class="col-from-label">Nominal</label>
+                                <label class="col-from-label" hidden>Nominal</label>
                                 <div class="col-8">
-                                    <input type="text" class="form-control" id="nominal" autocomplete="off">
+                                    <input type="text" class="form-control" id="nominal" autocomplete="off" hidden>
                                 </div>
                             </div>
 
                             <div class="mb-3 row">
-                                <label class="col-from-label">Kembalian</label>
+                                <label class="col-from-label" hidden>Kembalian</label>
                                 <div class="col-8">
-                                    <input type="text" class="form-control" id="kembalian" disabled>
+                                    <input type="text" class="form-control" id="kembalian" disabled hidden>
                                 </div>
                             </div>
                         </div>

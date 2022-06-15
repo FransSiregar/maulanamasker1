@@ -8,6 +8,7 @@ use \App\Models\CustomerModel;
 use \App\Models\SaleModel;
 use \App\Models\SaleDetailModel;
 use TCPDF;
+use \App\config\Services;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
@@ -31,6 +32,7 @@ class Penjualan extends BaseController
             'title' => 'Penjualan',
             'dataProduk' => $dataProduk,
             'dataCust' => $dataCust,
+            // 'validation' => \config\Services::validation()
 
         ];
         return view('penjualan/list', $data);
@@ -137,68 +139,79 @@ class Penjualan extends BaseController
 
             $nominal = $this->request->getVar('nominal');
             $id = $this->request->getVar('nota');
-
+            // mengambil file cover
+            $file_cover = $this->request->getFile('image');
+            if (
+                $file_cover->getError() == 4
+            ) { // ARTINYA TIDAK ADA FILE YANG DI UPLOAD
+                $nama_file = $this->defaultImage;
+            } else {
+                //generate nama file
+                $nama_file = $file_cover->getRandomName();
+                //pindahkan file ke folder public
+                $file_cover->move(
+                    'img',
+                    $nama_file
+                );
+            }
             // Pengecekan nominal 
-            if ($nominal < $totalBayar) {
+            // if ($nominal < $totalBayar) {
+            //     $response =
+            //         [
+            //             'status' => false,
+            //             'msg' => "Uang Tidak Mencukupi!",
+            //         ];
+            //     echo json_encode($response);
+            // } else {
+            //jika stock habis
+            $produk = $this->produk->where(['produk_id' => $items['id']])->first(); //pemanggilan stock i guess
+            if ($produk['stock'] <= 0) //logika stock jika stock habis
+            {
                 $response =
                     [
                         'status' => false,
-                        'msg' => "Uang Tidak Mencukupi!",
+                        'msg' => "Stok Habis!",
                     ];
                 echo json_encode($response);
             } else {
-                //jika stock habis
-                $produk = $this->produk->where(['produk_id' => $items['id']])->first(); //pemanggilan stock i guess
-                if ($produk['stock'] <= 0) //logika stock jika stock habis
-                {
-                    $response =
-                        [
-                            'status' => false,
-                            'msg' => "Stok Habis!",
-                        ];
-                    echo json_encode($response);
-                } else {
-                    // jika Nominal memenuhi akan menyimpan data di tabel sale dan sale_detail
-                    $this->sale->save([
+                // jika Nominal memenuhi akan menyimpan data di tabel sale dan sale_detail
+                $this->sale->save([
+                    'sale_id' => $id,
+                    'user_id' => user()->id,
+                    'customer_id' => $this->request->getVar('id-cust'),
+                    'address' => $this->request->getvar('address'),
+                    'phone' => $this->request->getVar('phone'),
+                    'image' => $this->request->getvar('image')
+                ]);
+
+                foreach ($this->cart->contents() as $items) {
+                    $this->saleDetail->save([
                         'sale_id' => $id,
-                        'user_id' => user()->id,
-                        'customer_id' => $this->request->getVar('id-cust'),
-                        'address' => $this->request->getvar('address'),
-                        'phone' => $this->request->getVar('phone')
+                        'produk_id' => $items['id'],
+                        'amount'  => $items['qty'],
+                        'price'   => $items['price'],
+                        'total_price' => $items['subtotal'],
                     ]);
-
-                    foreach ($this->cart->contents() as $items) {
-                        $this->saleDetail->save([
-                            'sale_id' => $id,
-                            'produk_id' => $items['id'],
-                            'amount'  => $items['qty'],
-                            'price'   => $items['price'],
-                            'total_price' => $items['subtotal'],
-                        ]);
-                        //Mengurangi jumlah stock di tabel produk
-                        // Get Produk berdasarkan ID Produk
-                        $produk = $this->produk->where(['produk_id' => $items['id']])->first();
-                        $this->produk->save([
-                            'produk_id' => $items['id'],
-                            'stock' => $produk['stock'] - $items['qty'],
-                        ]);
-                    }
-
-                    $this->cart->destroy();
-                    $kembalian = $nominal - $totalBayar;
-
-                    $response =
-                        [
-                            'status' => true,
-                            'msg' => "Process Payment",
-                            'data' =>
-                            [
-                                'kembalian' => number_to_currency($kembalian, 'IDR', 'id_ID', 2)
-                            ]
-                        ];
-                    echo json_encode($response);
+                    //Mengurangi jumlah stock di tabel produk
+                    // Get Produk berdasarkan ID Produk
+                    $produk = $this->produk->where(['produk_id' => $items['id']])->first();
+                    $this->produk->save([
+                        'produk_id' => $items['id'],
+                        'stock' => $produk['stock'] - $items['qty'],
+                    ]);
                 }
+
+                $this->cart->destroy();
+                $totalBayar;
+
+                $response =
+                    [
+                        'status' => true,
+                        'msg' => "Process Payment",
+                    ];
+                echo json_encode($response);
             }
+            // }
         }
     }
 
@@ -349,7 +362,13 @@ class Penjualan extends BaseController
         $writer->save('php://output');
     }
 
-    public function cetak()
+    public function confirm()
     {
+        $report = $this->sale->getReport();
+        $data = [
+            'title' => 'Laporan Penjualan',
+            'result' => $report,
+        ];
+        return view('penjualan/confirm');
     }
 }
